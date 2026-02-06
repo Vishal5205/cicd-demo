@@ -12,6 +12,7 @@ spec:
       labels:
         app: cicd-demo
     spec:
+      automountServiceAccountToken: false
       containers:
       - name: cicd-demo
         image: vishal1326/cicd-demo:latest
