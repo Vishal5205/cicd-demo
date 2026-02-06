@@ -2,16 +2,17 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "vishal1326/cicd-demo"
+        DOCKER_IMAGE  = "vishal1326/cicd-demo"
         SONAR_PROJECT = "Vishal5205_cicd-demo"
-        SONAR_ORG = "vishal5205"
+        SONAR_ORG     = "vishal5205"
     }
 
     stages {
 
         stage('Checkout') {
             steps {
-                git credentialsId: 'github-creds',
+                git branch: 'main',
+                    credentialsId: 'github-creds',
                     url: 'https://github.com/Vishal5205/cicd-demo.git'
             }
         }
@@ -39,9 +40,15 @@ pipeline {
 
         stage('Docker Push') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'dockerhub-creds',
+                        usernameVariable: 'USER',
+                        passwordVariable: 'PASS'
+                    )
+                ]) {
                     sh """
-                    echo $PASS | docker login -u $USER --password-stdin
+                    echo \$PASS | docker login -u \$USER --password-stdin
                     docker push ${DOCKER_IMAGE}:latest
                     """
                 }
