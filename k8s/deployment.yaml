@@ -15,7 +15,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: cicd-demo
-          image: vishal1326/cicd-demo:latest
+          image: vishal1326/cicd-demo:18
           ports:
             - containerPort: 80
 
