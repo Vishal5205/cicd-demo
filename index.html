@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DevOps CI/CD Portfolio – Vishal</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  background: #0f172a;
+  color: #e5e7eb;
+}
+
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 40px;
+}
+
+h1 {
+  color: #38bdf8;
+  text-align: center;
+}
+
+h2 {
+  color: #22c55e;
+  margin-top: 40px;
+}
+
+.card {
+  background: #020617;
+  padding: 25px;
+  border-radius: 10px;
+  margin-top: 25px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background: #1e293b;
+  padding: 12px;
+}
+
+td {
+  padding: 12px;
+  border-bottom: 1px solid #334155;
+}
+
+.flow li {
+  margin-bottom: 10px;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 50px;
+  color: #94a3b8;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>End-to-End DevOps CI/CD Pipeline</h1>
+<p style="text-align:center;">Professional DevOps Automation Project</p>
+
+<div class="card">
+<h2>Project Overview</h2>
+
+<p>
+This project demonstrates a complete enterprise-style DevOps CI/CD and GitOps workflow where application code is automatically built, analyzed, containerized, and deployed to Kubernetes with zero manual intervention.
+</p>
+
+<p>
+The goal of this project was to simulate real production DevOps practices from developer commit to live Kubernetes deployment using modern automation tools.
+</p>
+</div>
+
+<div class="card">
+<h2>Technology Stack & Tools (Integration & Automation)</h2>
+
+<table>
+<tr><th>Tool</th><th>Purpose</th></tr>
+<tr><td>GitHub</td><td>Source code management and version control</td></tr>
+<tr><td>Jenkins</td><td>Continuous Integration server for automated builds</td></tr>
+<tr><td>SonarCloud</td><td>Static code analysis and quality gate enforcement</td></tr>
+<tr><td>Docker</td><td>Application containerization</td></tr>
+<tr><td>Docker Hub</td><td>Container image registry</td></tr>
+<tr><td>Kubernetes</td><td>Container orchestration and runtime platform</td></tr>
+<tr><td>ArgoCD</td><td>GitOps continuous deployment and synchronization</td></tr>
+<tr><td>AWS EC2</td><td>Cloud infrastructure hosting</td></tr>
+</table>
+
+<p style="margin-top:15px;">
+These tools work together to form a fully automated CI/CD pipeline where each stage is integrated for seamless delivery from code commit to production deployment.
+</p>
+
+</div>
+
+<div class="card">
+<h2>Detailed Deployment Flow</h2>
+
+<ol class="flow">
+<li>Developer pushes application source code to GitHub.</li>
+<li>GitHub Webhook automatically triggers Jenkins pipeline.</li>
+<li>Jenkins checks out source code using Jenkinsfile.</li>
+<li>SonarCloud performs code quality and security scanning.</li>
+<li>Jenkins builds Docker container image.</li>
+<li>Docker image is pushed to Docker Hub.</li>
+<li>Kubernetes deployment manifests reference latest image.</li>
+<li>ArgoCD continuously monitors Git repository.</li>
+<li>ArgoCD syncs changes into Kubernetes cluster.</li>
+<li>Kubernetes performs rolling update of application pods.</li>
+<li>Application is exposed externally using NodePort service.</li>
+<li>User accesses application via EC2 public IP.</li>
+</ol>
+
+</div>
+
+<div class="card">
+<h2>DevOps Responsibilities</h2>
+
+<ul class="flow">
+<li>Designed Jenkins CI pipeline.</li>
+<li>Integrated SonarCloud quality gates.</li>
+<li>Implemented Docker containerization.</li>
+<li>Configured Docker Hub authentication.</li>
+<li>Provisioned Kubernetes cluster.</li>
+<li>Deployed ArgoCD for GitOps deployment.</li>
+<li>Enabled automatic synchronization and self-healing.</li>
+<li>Configured GitHub Webhooks.</li>
+</ul>
+
+</div>
+
+<div class="card">
+<h2>Key Highlights</h2>
+
+<ul class="flow">
+<li>Fully automated CI/CD pipeline.</li>
+<li>Zero manual deployment.</li>
+<li>GitOps-based delivery.</li>
+<li>Self-healing Kubernetes workloads.</li>
+<li>Production-style DevOps implementation.</li>
+</ul>
+
+</div>
+
+<div class="footer">
+<p><strong>Project Done By Vishal</strong></p>
+<p>Deployed using Jenkins, SonarCloud, Docker, Kubernetes and ArgoCD</p>
+</div>
+
+</div>
+
+</body>
+</html>
