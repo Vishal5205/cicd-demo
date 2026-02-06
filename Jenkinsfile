@@ -23,7 +23,7 @@ pipeline {
                 withSonarQubeEnv('SonarCloud') {
                     withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                         sh """
-                        sonar-scanner \
+                        /opt/sonar-scanner/bin/sonar-scanner \
                         -Dsonar.projectKey=${SONAR_PROJECT} \
                         -Dsonar.organization=${SONAR_ORG} \
                         -Dsonar.sources=. \
@@ -47,9 +47,11 @@ pipeline {
         stage('Docker Push') {
             steps {
                 withCredentials([
-                    usernamePassword(credentialsId: 'dockerhub-creds',
-                    usernameVariable: 'USER',
-                    passwordVariable: 'PASS')
+                    usernamePassword(
+                        credentialsId: 'dockerhub-creds',
+                        usernameVariable: 'USER',
+                        passwordVariable: 'PASS'
+                    )
                 ]) {
                     sh """
                     echo \$PASS | docker login -u \$USER --password-stdin
@@ -64,8 +66,10 @@ pipeline {
             steps {
                 sh """
                 sed -i 's|image:.*|image: ${DOCKER_IMAGE}:${IMAGE_TAG}|' k8s/deployment.yaml
-                git config user.email "jenkins@local"
-                git config user.name "jenkins"
+
+                git config --global user.email "jenkins@cicd.com"
+                git config --global user.name "Jenkins"
+
                 git add k8s/deployment.yaml
                 git commit -m "Update image to ${IMAGE_TAG}"
                 git push origin main
@@ -76,10 +80,11 @@ pipeline {
 
     post {
         success {
-            echo "Pipeline completed successfully"
+            echo "CI/CD Pipeline Completed Successfully"
         }
+
         failure {
-            echo "Pipeline failed"
+            echo "Pipeline Failed"
         }
     }
 }
