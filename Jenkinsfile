@@ -19,15 +19,17 @@ pipeline {
 
         stage('SonarCloud Scan') {
             steps {
-                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
-                    sh """
-                    /opt/sonar-scanner/bin/sonar-scanner \
-                    -Dsonar.projectKey=${SONAR_PROJECT} \
-                    -Dsonar.organization=${SONAR_ORG} \
-                    -Dsonar.sources=. \
-                    -Dsonar.host.url=https://sonarcloud.io \
-                    -Dsonar.token=\$SONAR_TOKEN
-                    """
+                withSonarQubeEnv('SonarCloud') {
+                    withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                        sh """
+                        /opt/sonar-scanner/bin/sonar-scanner \
+                        -Dsonar.projectKey=${SONAR_PROJECT} \
+                        -Dsonar.organization=${SONAR_ORG} \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=https://sonarcloud.io \
+                        -Dsonar.token=\$SONAR_TOKEN
+                        """
+                    }
                 }
             }
         }
@@ -70,6 +72,15 @@ pipeline {
                 kubectl apply -f k8s/service.yaml
                 """
             }
+        }
+    }
+
+    post {
+        success {
+            echo "CI/CD Pipeline Completed Successfully"
+        }
+        failure {
+            echo "Pipeline Failed"
         }
     }
 }
