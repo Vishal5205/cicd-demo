@@ -14,11 +14,15 @@ spec:
     spec:
       automountServiceAccountToken: false
       containers:
-      - name: cicd-demo
-        image: vishal1326/cicd-demo:latest
-        ports:
-        - containerPort: 80
-        resources:
-          limits:
-            memory: "256Mi"
-            cpu: "200m"
+        - name: cicd-demo
+          image: vishal1326/cicd-demo:latest
+          ports:
+            - containerPort: 80
+
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
