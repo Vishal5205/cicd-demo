@@ -2,9 +2,10 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE  = "vishal1326/cicd-demo"
+        DOCKER_IMAGE = "vishal1326/cicd-demo"
         SONAR_PROJECT = "Vishal5205_cicd-demo"
-        SONAR_ORG     = "vishal5205"
+        SONAR_ORG = "vishal5205"
+        IMAGE_TAG = "${BUILD_NUMBER}"
     }
 
     stages {
@@ -12,8 +13,8 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                    credentialsId: 'github-creds',
-                    url: 'https://github.com/Vishal5205/cicd-demo.git'
+                credentialsId: 'github-creds',
+                url: 'https://github.com/Vishal5205/cicd-demo.git'
             }
         }
 
@@ -36,15 +37,17 @@ pipeline {
 
         stage('Quality Gate') {
             steps {
-                timeout(time: 15, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
+                script {
+                    timeout(time: 20, unit: 'MINUTES') {
+                        waitForQualityGate abortPipeline: true
+                    }
                 }
             }
         }
 
         stage('Docker Build') {
             steps {
-                sh "docker build -t ${DOCKER_IMAGE}:latest ."
+                sh "docker build -t ${DOCKER_IMAGE}:${IMAGE_TAG} ."
             }
         }
 
@@ -59,17 +62,23 @@ pipeline {
                 ]) {
                     sh """
                     echo \$PASS | docker login -u \$USER --password-stdin
-                    docker push ${DOCKER_IMAGE}:latest
+                    docker push ${DOCKER_IMAGE}:${IMAGE_TAG}
                     """
                 }
             }
         }
 
-        stage('Deploy to Kubernetes') {
+        stage('Update K8s Manifest (GitOps)') {
             steps {
                 sh """
-                kubectl apply -f k8s/deployment.yaml
-                kubectl apply -f k8s/service.yaml
+                sed -i 's|image:.*|image: ${DOCKER_IMAGE}:${IMAGE_TAG}|' k8s/deployment.yaml
+
+                git config user.email "jenkins@cicd.com"
+                git config user.name "jenkins"
+
+                git add k8s/deployment.yaml
+                git commit -m "Updated image to ${IMAGE_TAG}"
+                git push https://Vishal5205:${GITHUB_TOKEN}@github.com/Vishal5205/cicd-demo.git
                 """
             }
         }
@@ -77,10 +86,10 @@ pipeline {
 
     post {
         success {
-            echo "CI/CD Pipeline Completed Successfully"
+            echo "Pipeline completed successfully. ArgoCD will deploy."
         }
         failure {
-            echo "Pipeline Failed"
+            echo "Pipeline failed."
         }
     }
 }
