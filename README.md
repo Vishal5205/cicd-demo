@@ -2,7 +2,8 @@
 
 ## Architecture
 
-![Architecture](architecture.png)
+Architecture
+<img width="1024" height="800" alt="image" src="https://github.com/user-attachments/assets/361ff2f4-0bf7-4f3e-8249-9fe95092bf32" />
 
 ---
 
