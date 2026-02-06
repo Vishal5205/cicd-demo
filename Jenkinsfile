@@ -21,7 +21,7 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                     sh """
-                    sonar-scanner \
+                    /opt/sonar-scanner/bin/sonar-scanner \
                     -Dsonar.projectKey=${SONAR_PROJECT} \
                     -Dsonar.organization=${SONAR_ORG} \
                     -Dsonar.sources=. \
