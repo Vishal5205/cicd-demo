@@ -63,20 +63,29 @@ pipeline {
         }
 
         stage('Update K8s Manifest (GitOps)') {
-            steps {
-                sh """
-                sed -i 's|image:.*|image: ${DOCKER_IMAGE}:${IMAGE_TAG}|' k8s/deployment.yaml
+        steps {
+        withCredentials([
+            usernamePassword(
+                credentialsId: 'github-creds',
+                usernameVariable: 'GIT_USER',
+                passwordVariable: 'GIT_PASS'
+            )
+        ]) {
+            sh """
+            sed -i 's|image:.*|image: ${DOCKER_IMAGE}:${IMAGE_TAG}|' k8s/deployment.yaml
 
-                git config --global user.email "jenkins@cicd.com"
-                git config --global user.name "Jenkins"
+            git config --global user.email "jenkins@cicd.com"
+            git config --global user.name "Jenkins"
 
-                git add k8s/deployment.yaml
-                git commit -m "Update image to ${IMAGE_TAG}"
-                git push origin main
-                """
+            git add k8s/deployment.yaml
+            git commit -m "Update image to ${IMAGE_TAG}"
+
+            git push https://\$GIT_USER:\$GIT_PASS@github.com/Vishal5205/cicd-demo.git main
+            """
             }
         }
     }
+
 
     post {
         success {
